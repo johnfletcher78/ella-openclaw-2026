@@ -37,17 +37,19 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 ---
 
-## VPS Orchestrator
+## Atlas — VPS Orchestrator
 
+**Name:** Atlas (the titan)
 **Host:** srv1365311 (via Tailscale SSH)
 **Tailscale IP:** 100.85.198.42
 **User:** ubuntu
 **OpenClaw Gateway:** ws://127.0.0.1:19789 (local loopback)
 **Auth Token:** `d0db08c66ed546537d5461fb4e9d35e5590c173efa71d21b`
+**Agent ID:** atlas
 
-**Purpose:** Headless background worker for cron jobs, monitoring, sub-agents
+**Purpose:** Headless background worker. Carries the load when Mac sleeps — cron jobs, monitoring, sub-agents, trading watches.
 **Access:** SSH tunnel or `exec ssh` from Mac
-**Channels:** None (API only)
+**Channels:** None (API only — no Telegram conflicts)
 
 ### Connecting
 ```bash
