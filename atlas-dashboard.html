@@ -53,6 +53,7 @@
             padding: 20px 30px;
             background: #1e293b;
             border-bottom: 1px solid #334155;
+            flex-wrap: wrap;
         }
         
         .stat-card {
@@ -60,6 +61,7 @@
             padding: 15px 25px;
             border-radius: 8px;
             min-width: 150px;
+            flex: 1;
         }
         
         .stat-card .label {
@@ -75,25 +77,33 @@
             color: #f8fafc;
         }
         
+        .section-title {
+            padding: 20px 30px 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            letter-spacing: 1px;
+        }
+        
         .kanban {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            padding: 30px;
+            padding: 0 30px 30px;
         }
         
         .column {
             background: #1e293b;
             border-radius: 12px;
             padding: 20px;
-            min-height: 500px;
+            min-height: 400px;
         }
         
         .column-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             padding-bottom: 15px;
             border-bottom: 2px solid #334155;
         }
@@ -108,6 +118,13 @@
         .column.pending .column-title { color: #f59e0b; }
         .column.in-progress .column-title { color: #3b82f6; }
         .column.done .column-title { color: #22c55e; }
+        
+        .column-desc {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
         
         .count {
             background: #334155;
@@ -185,6 +202,82 @@
         .priority.normal { background: #3b82f6; color: white; }
         .priority.low { background: #64748b; color: white; }
         
+        /* Documents Section */
+        .docs-section {
+            background: #1e293b;
+            margin: 0 30px 30px;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .docs-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #334155;
+        }
+        
+        .docs-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #a78bfa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .docs-list {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .doc-item {
+            background: #334155;
+            border-radius: 8px;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 15px;
+            align-items: center;
+            border-left: 4px solid #22c55e;
+        }
+        
+        .doc-info h4 {
+            color: #f1f5f9;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        
+        .doc-info p {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        
+        .doc-meta {
+            text-align: right;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        
+        .doc-status {
+            background: #22c55e;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+            font-style: italic;
+        }
+        
         .refresh-bar {
             position: fixed;
             bottom: 0;
@@ -218,13 +311,6 @@
             background: #2563eb;
         }
         
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #64748b;
-            font-style: italic;
-        }
-        
         .error {
             background: #dc2626;
             color: white;
@@ -241,7 +327,7 @@
     
     <div class="stats-bar">
         <div class="stat-card">
-            <div class="label">Pending</div>
+            <div class="label">Pending Tasks</div>
             <div class="value" id="stat-pending">0</div>
         </div>
         <div class="stat-card">
@@ -253,10 +339,12 @@
             <div class="value" id="stat-done">0</div>
         </div>
         <div class="stat-card">
-            <div class="label">Total Tasks</div>
-            <div class="value" id="stat-total">0</div>
+            <div class="label">Documents</div>
+            <div class="value" id="stat-docs">0</div>
         </div>
     </div>
+    
+    <div class="section-title">📋 Task Queue — Atlas Work Pipeline</div>
     
     <div class="kanban">
         <div class="column pending">
@@ -264,6 +352,7 @@
                 <span class="column-title">⏳ Pending</span>
                 <span class="count" id="count-pending">0</span>
             </div>
+            <div class="column-desc">Tasks waiting to be picked up by Atlas</div>
             <div id="pending-tasks"></div>
         </div>
         
@@ -272,6 +361,7 @@
                 <span class="column-title">🔵 In Progress</span>
                 <span class="count" id="count-progress">0</span>
             </div>
+            <div class="column-desc">Atlas is currently working on these</div>
             <div id="progress-tasks"></div>
         </div>
         
@@ -280,7 +370,20 @@
                 <span class="column-title">✅ Completed</span>
                 <span class="count" id="count-done">0</span>
             </div>
+            <div class="column-desc">Finished tasks awaiting your review</div>
             <div id="done-tasks"></div>
+        </div>
+    </div>
+    
+    <div class="section-title">📄 Completed Documents — Ready for Review</div>
+    
+    <div class="docs-section">
+        <div class="docs-header">
+            <div class="docs-title">📑 Finalized Documents (Atlas Approved)</div>
+            <span class="count" id="count-docs">0</span>
+        </div>
+        <div class="docs-list" id="docs-list">
+            <div class="empty-state">No finalized documents yet. Documents appear here after Atlas review.</div>
         </div>
     </div>
     
@@ -313,15 +416,16 @@
         function createTaskCard(task, status) {
             const priority = task.priority || 'normal';
             const type = task.type || 'task';
-            const id = task.id || 'unknown';
+            const id = task.id || task.document_id || 'unknown';
             const shortId = id.split('-').slice(-2).join('-');
+            const desc = task.task || task.title || 'No description';
             
             return `
                 <div class="task-card ${status}">
                     <div class="task-id">${shortId}</div>
                     <span class="task-type">${type}</span>
                     <span class="priority ${priority}">${priority}</span>
-                    <div class="task-desc">${task.task || 'No description'}</div>
+                    <div class="task-desc">${desc}</div>
                     <div class="task-meta">
                         <span>📅 ${timeAgo(task.created)}</span>
                         ${task.completed ? `<span>✓ ${timeAgo(task.completed)}</span>` : ''}
@@ -330,47 +434,85 @@
             `;
         }
         
+        function createDocCard(doc) {
+            const filename = doc.split('/').pop();
+            const name = filename.replace('.md', '').replace(/-/g, ' ').replace(/v\d+$/, '');
+            const title = name.charAt(0).toUpperCase() + name.slice(1);
+            
+            return `
+                <div class="doc-item">
+                    <div class="doc-info">
+                        <h4>📄 ${title}</h4>
+                        <p>${filename} — Ready for review</p>
+                    </div>
+                    <div class="doc-meta">${timeAgo(new Date().toISOString())}</div>
+                    <span class="doc-status">Approved</span>
+                </div>
+            `;
+        }
+        
         function renderTasks(tasks, containerId, status) {
             const container = document.getElementById(containerId);
             if (!tasks || tasks.length === 0) {
-                container.innerHTML = '<div class="empty-state">No tasks</div>';
+                container.innerHTML = '<div class="empty-state">No tasks in this column</div>';
                 return;
             }
             
             container.innerHTML = tasks.map(t => createTaskCard(t, status)).join('');
         }
         
+        function renderDocs(docs) {
+            const container = document.getElementById('docs-list');
+            if (!docs || docs.length === 0) {
+                container.innerHTML = '<div class="empty-state">No finalized documents yet. Documents appear here after Atlas review.</div>';
+                return;
+            }
+            
+            container.innerHTML = docs.map(d => createDocCard(d)).join('');
+        }
+        
         async function loadData() {
             try {
-                const response = await fetch('atlas-data.json?' + Date.now());
-                if (!response.ok) throw new Error('Failed to load data');
-                
-                const data = await response.json();
+                // Load task data
+                const taskResponse = await fetch('atlas-data.json?' + Date.now());
+                const taskData = await taskResponse.json();
                 
                 // Update stats
-                document.getElementById('stat-pending').textContent = data.pending.length;
-                document.getElementById('stat-progress').textContent = data.inProgress.length;
-                document.getElementById('stat-done').textContent = data.done.length;
-                document.getElementById('stat-total').textContent = 
-                    data.pending.length + data.inProgress.length + data.done.length;
+                document.getElementById('stat-pending').textContent = taskData.pending.length;
+                document.getElementById('stat-progress').textContent = taskData.inProgress.length;
+                document.getElementById('stat-done').textContent = taskData.done.length;
                 
                 // Update counts
-                document.getElementById('count-pending').textContent = data.pending.length;
-                document.getElementById('count-progress').textContent = data.inProgress.length;
-                document.getElementById('count-done').textContent = data.done.length;
+                document.getElementById('count-pending').textContent = taskData.pending.length;
+                document.getElementById('count-progress').textContent = taskData.inProgress.length;
+                document.getElementById('count-done').textContent = taskData.done.length;
                 
                 // Render tasks
-                renderTasks(data.pending, 'pending-tasks', 'pending');
-                renderTasks(data.inProgress, 'progress-tasks', 'in-progress');
-                renderTasks(data.done.slice(0, 10), 'done-tasks', 'done'); // Show last 10 completed
-                
-                document.getElementById('last-update').textContent = new Date().toLocaleString();
+                renderTasks(taskData.pending, 'pending-tasks', 'pending');
+                renderTasks(taskData.inProgress, 'progress-tasks', 'in-progress');
+                renderTasks(taskData.done.slice(0, 10), 'done-tasks', 'done');
                 
             } catch (error) {
-                console.error('Error loading data:', error);
-                document.getElementById('pending-tasks').innerHTML = 
-                    '<div class="error">Failed to load data. Atlas may be offline.</div>';
+                console.error('Error loading task data:', error);
             }
+            
+            // Load document data
+            try {
+                const docResponse = await fetch('documents-data.json?' + Date.now());
+                const docData = await docResponse.json();
+                
+                document.getElementById('stat-docs').textContent = docData.documents.length;
+                document.getElementById('count-docs').textContent = docData.documents.length;
+                renderDocs(docData.documents);
+                
+            } catch (error) {
+                console.error('Error loading document data:', error);
+                document.getElementById('docs-list').innerHTML = 
+                    '<div class="empty-state">Document data unavailable. Check back later.</div>';
+                document.getElementById('stat-docs').textContent = '?';
+            }
+            
+            document.getElementById('last-update').textContent = new Date().toLocaleString();
         }
         
         // Load on startup
