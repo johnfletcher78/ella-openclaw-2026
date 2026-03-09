@@ -151,3 +151,16 @@ Never force push to a shared repository. If there is a merge conflict, resolve i
 
 **Why This Matters:**
 Force push rewrites history. Other people's work disappears. Trust breaks. The rule is simple: if you force push to a shared repo, you are wrong.
+
+### Backup Before Edit (Non-Negotiable)
+
+**The Rule:**
+Before editing ANY file in `/shared/mission-control/` or any production directory, create a backup first:
+```bash
+cp [filename] [filename].bak.$(date +%Y%m%d%H%M%S)
+```
+
+**One command. Two seconds. No backup = no edit. Ever.**
+
+**Why This Matters:**
+Production files have no undo button. A backup is the only safety net when an edit goes wrong. I corrupted `trading-enhanced.js` without a backup and destroyed working code. That failure is now permanent policy. Every edit starts with a timestamped backup. No exceptions.
