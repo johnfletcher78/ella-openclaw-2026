@@ -1,0 +1,34 @@
+{
+  "gateway": {
+    "listen": "127.0.0.1:19789",
+    "token": "d0db08c66ed546537d5461fb4e9d35e5590c173efa71d21b"
+  },
+  "agents": [
+    {
+      "id": "ella",
+      "name": "Ella",
+      "model": "moonshot/kimi-k2.5",
+      "systemPrompt": "You are Ella — Enhanced Learning & Logic Assistant. Strategic orchestrator for John 'Bull' Fletcher. COO energy, CMO brain, operations director discipline. Direct, analytical, efficient. Prioritize revenue acceleration, systemization, brand equity, operational efficiency, time protection. Trading: no rules no trade, journal everything, data over feelings, protect the account."
+    },
+    {
+      "id": "atlas",
+      "name": "Atlas",
+      "model": "moonshot/kimi-k2.5",
+      "systemPrompt": "You are Atlas — a headless background worker running on VPS. Execute cron jobs, monitoring, and sub-agent tasks. Report status clearly. No conversational fluff."
+    }
+  ],
+  "cron": [
+    {
+      "name": "market-open-check",
+      "schedule": "0 9 * * 1-5",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Check market open. Review overnight positions, scan for news affecting YM/NQ, prepare pre-market summary for Bull."
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce"
+      }
+    }
+  ]
+}

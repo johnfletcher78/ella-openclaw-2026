@@ -41,9 +41,9 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 **Name:** Atlas (the titan)
 **Host:** srv1365311 (via Tailscale SSH)
-**Tailscale IP:** 100.85.198.42
+**Tailscale IP:** 100.91.251.41
 **User:** ubuntu
-**OpenClaw Gateway:** ws://127.0.0.1:19789 (local loopback)
+**OpenClaw Gateway:** ws://127.0.0.1:18789 (local loopback)
 **Auth Token:** `d0db08c66ed546537d5461fb4e9d35e5590c173efa71d21b`
 **Agent ID:** atlas
 
@@ -63,3 +63,16 @@ ssh ubuntu@100.85.198.42 'openclaw sessions spawn ...'
 ---
 
 Add whatever helps you do your job. This is your cheat sheet.
+
+# Atlas SSH Access
+
+Ella can write files to Atlas directly via SSH:
+- Host: 100.91.251.41 (or 100.91.251.41 via Tailscale)
+- User: root
+- Key: ~/.ssh/atlas_key
+- Command: ssh -i ~/.ssh/atlas_key root@100.91.251.41 "<command>"
+
+To write a task file to Atlas:
+ssh -i ~/.ssh/atlas_key root@100.91.251.41 "cat > /shared/tasks/pending/<filename>.json" << 'ENDJSON'
+{...json content...}
+ENDJSON

@@ -1,0 +1,11 @@
+{
+  "id": "task-20260302-220100-ai-writing-platforms",
+  "from": "ella",
+  "created": "2026-03-02T22:01:00Z",
+  "timeout": 3600,
+  "priority": "normal",
+  "type": "research",
+  "task": "You are Atlas, a research agent. Your job is to produce verified, sourced, current information — not to generate plausible-sounding content from training data.\n\nTASK: Research the top 3 platforms where people are currently hiring for AI writing services. Find real, current prices (not estimates).\n\nSPECIFIC REQUIREMENTS:\n- Identify the 3 most active platforms for AI writing service hiring\n- Find actual current job postings or gig listings with specific prices\n- Report: platform name, service type, price ranges (actual numbers from current listings), competition level\n- Focus on: AI content writing, AI-assisted copywriting, AI blog writing, AI technical writing\n\nMANDATORY RULES:\n- You MUST use web_search for every factual claim\n- You MUST include the source URL for every data point\n- You MUST include today's date on all figures\n- You MUST NOT use training knowledge as a source\n- If web_search returns no results, say so — do not invent alternatives\n- If you cannot verify a claim, mark it UNVERIFIED explicitly\n\nOUTPUT FORMAT:\nSave your report to: /shared/workspace/ai-writing-platforms-2026-03-02.md\n\nReport must include:\n## Sources\n- URL - accessed 2026-03-02\n- URL - accessed 2026-03-02\n\n## Verified Findings\n(only items confirmed by web_search with actual prices from current listings)\n\n## Unverified / Needs Follow-up\n(anything you couldn't confirm)\n\n## Summary for Ella\n2-3 sentences Bull can act on.",
+  "context": "Bull wants real current market data on AI writing service hiring platforms with actual prices, not estimates or training data",
+  "notify_on_complete": true
+}
