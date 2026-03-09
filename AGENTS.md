@@ -94,3 +94,27 @@ Always include a callback_key so Atlas can report back.
 - Surface errors. Do not hide failures.
 - **Never allow direct agent output to reach Bull without review and attribution.**
 - Atlas endpoint: ws://127.0.0.1:18790 (update with real hostname after Tailscale setup)
+
+---
+
+# Atlas Status Check Protocol (Effective March 9, 2026)
+
+**Purpose:** Eliminate false connectivity errors by checking Supabase heartbeat before attempting direct Atlas connection.
+
+## Decision Tree
+
+1. **Supabase heartbeat fresh (under 2 min)** → Atlas is online, proceed normally
+2. **Supabase heartbeat stale or missing** → Attempt direct Atlas connection as fallback
+3. **Supabase unreachable, Atlas responds** → Trust Atlas, log Supabase failure
+4. **Supabase unreachable AND Atlas fails** → **TRUE OUTAGE** → Alert Bull on Telegram immediately
+
+## Implementation
+
+**Scripts:**
+- `~/.openclaw/bin/check_atlas_heartbeat.sh` — Query Supabase `agent_status` table
+- `~/.openclaw/bin/is_heartbeat_fresh.sh` — Check if heartbeat < 2 minutes old
+- `~/.openclaw/bin/atlas_status_check.sh` — Complete status check with decision tree
+
+**Threshold:** 120 seconds (2 minutes)
+
+**Alert Rule:** Only scenario 4 (both checks fail) warrants immediate Telegram alert. All other scenarios are handled silently or logged for review.
