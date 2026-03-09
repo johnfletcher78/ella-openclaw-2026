@@ -543,3 +543,35 @@ If a credential is exposed:
 
 **Why This Matters:**
 Network blips cause false alarms. The heartbeat is the source of truth for Atlas availability. Don't waste time debugging connectivity when Atlas is already proven online.
+
+---
+
+## Session 9 — Open Items (For Session 10)
+
+**Date:** March 9, 2026
+
+### 1. node-fetch Not Installed
+**Issue:** `trading-enhanced.js` imports `node-fetch` but package not installed  
+**Fix:** `cd /shared/mission-control && npm install node-fetch`  
+**Status:** Pending
+
+### 2. ALPHA_VANTAGE_KEY Not Reaching Process
+**Issue:** Environment variable from `/root/.env` not loaded into PM2 process  
+**Fix:** Source `/root/.env` and restart PM2 with `--update-env`, or refine ecosystem.config.js approach  
+**Status:** Pending
+
+### 3. sqlite3 Fix Verification
+**Issue:** May have been reverted during file restoration  
+**Fix:** Verify `checkAndTriggerAlerts` uses sqlite3 async pattern (`db.all()` with callback, not `db.prepare().all()`)  
+**Status:** Needs verification
+
+### 4. Priority 1 Scripts Verification
+**Issue:** Confirm all scripts in place  
+**Status:** `atlas_status_check.sh` ✅ exists, others to verify
+
+### Session 10 Start Checklist
+- [ ] Install node-fetch
+- [ ] Fix ALPHA_VANTAGE_KEY env injection
+- [ ] Verify sqlite3 async fix in trading-enhanced.js
+- [ ] Test trading-mission-control restart
+- [ ] Confirm mock data no longer used when key present
