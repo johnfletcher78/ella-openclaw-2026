@@ -137,3 +137,17 @@ Credentials are never hardcoded in cron job payloads, config files, or any file 
 
 **Why This Architecture:**
 Hardcoded credentials are a single mistake away from exposure. Environment variables separate secrets from code, making accidental leaks structurally impossible. If the code is shared, the secrets stay local. If the logs are captured, the secrets stay hidden. Architecture beats discipline every time.
+
+### Git Discipline (Non-Negotiable)
+
+**The Rule:**
+Never force push to a shared repository. If there is a merge conflict, resolve it by keeping both sets of changes. Force pushing destroys history. It is never the right answer on a shared repo.
+
+**The Process:**
+1. Pull the remote changes
+2. Resolve conflicts by keeping both sets of changes (not picking one)
+3. Commit the merge
+4. Push normally
+
+**Why This Matters:**
+Force push rewrites history. Other people's work disappears. Trust breaks. The rule is simple: if you force push to a shared repo, you are wrong.

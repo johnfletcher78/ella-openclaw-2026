@@ -520,3 +520,26 @@ If a credential is exposed:
 4. Confirm completion
 
 **Lesson:** Security > Convenience. Always.
+
+---
+
+## Session 9 — Active Priorities
+
+### Supabase Heartbeat Check Protocol
+
+**Rule:** Before attempting any direct Atlas connection, check `agent_status` in Supabase first.
+
+**Implementation:**
+- Query Supabase `agent_status` table for Atlas heartbeat
+- If heartbeat is under 2 minutes old, Atlas is online
+- Trust the heartbeat over direct connection attempts
+- This eliminates false connectivity errors from network blips
+
+**Standard Protocol:**
+1. Check Supabase heartbeat first
+2. If recent (< 2 min), proceed with Atlas operations
+3. If stale or missing, then attempt direct connection as fallback
+4. Log which method was used for the connection
+
+**Why This Matters:**
+Network blips cause false alarms. The heartbeat is the source of truth for Atlas availability. Don't waste time debugging connectivity when Atlas is already proven online.
