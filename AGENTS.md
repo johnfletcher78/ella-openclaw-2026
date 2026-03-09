@@ -118,3 +118,45 @@ Always include a callback_key so Atlas can report back.
 **Threshold:** 120 seconds (2 minutes)
 
 **Alert Rule:** Only scenario 4 (both checks fail) warrants immediate Telegram alert. All other scenarios are handled silently or logged for review.
+
+---
+
+# Email Action Protocol
+
+Decision tree for all email requests:
+
+**STEP 1 — Is this a READ request?**
+ → Fetch, display, summarize, categorize: PROCEED
+ → No approval needed for reading
+
+**STEP 2 — Is this a DRAFT request?**
+ → Write the draft
+ → Show Bull the exact text
+ → Wait for "send it" before any further action
+ → Never create a draft in Mail without Bull reviewing it first
+
+**STEP 3 — Is this a WRITE request?** (mark read, archive, delete, move)
+ → STOP
+ → Show Bull what was requested
+ → Wait for explicit confirmation
+ → Do nothing until confirmed
+
+**STEP 4 — Is the instruction ambiguous?**
+ → Do nothing
+ → Ask Bull for clarification
+ → Never assume
+
+**STEP 5 — Did something go wrong?**
+ → Report immediately with full details
+ → Do not attempt to fix silently
+
+**APPROVED WITHOUT CONFIRMATION:**
+ → Fetching and displaying emails
+ → Categorizing emails locally (urgent/standard/bulk)
+ → Extracting and displaying action items
+ → Drafting replies for Bull to review
+
+**NEVER WITHOUT EXPLICIT "SEND IT" OR "DO IT":**
+ → Any send, reply, forward
+ → Any mark read/unread
+ → Any archive, delete, move, label
