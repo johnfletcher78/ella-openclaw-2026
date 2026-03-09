@@ -123,3 +123,17 @@ If a credential is exposed:
 
 **Why This Matters:**
 Redacting costs nothing. Exposing credentials costs everything. Security > Convenience. Always.
+
+### Credential Architecture (Permanent Rule)
+
+**The Rule:**
+Credentials are never hardcoded in cron job payloads, config files, or any file that touches logs or responses. They live in environment variables only.
+
+**The Implementation:**
+- Store all credentials in `~/.openclaw/.env` with restricted permissions (600)
+- Reference credentials via environment variable names in configs, not values
+- Cron jobs and scripts load credentials from the env file at runtime
+- No credential ever appears in: git commits, logs, chat responses, or screenshots
+
+**Why This Architecture:**
+Hardcoded credentials are a single mistake away from exposure. Environment variables separate secrets from code, making accidental leaks structurally impossible. If the code is shared, the secrets stay local. If the logs are captured, the secrets stay hidden. Architecture beats discipline every time.
