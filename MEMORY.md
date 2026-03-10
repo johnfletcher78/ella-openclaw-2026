@@ -546,6 +546,70 @@ Network blips cause false alarms. The heartbeat is the source of truth for Atlas
 
 ---
 
+---
+
+## Gateway Health & Memory Management
+
+**Date:** March 9, 2026  
+**Issue:** Memory leak causing gateway instability
+
+### Memory Baselines & Thresholds
+
+| State | Memory Range | CPU | Action |
+|-------|-------------|-----|--------|
+| Clean start | 58-128 MB | <5% | Normal |
+| Warning zone | 658+ MB | 30-50% | Monitor closely |
+| Critical threshold | 800+ MB | 70%+ | Health monitor triggers restart |
+| Runaway state | 841+ MB | 87%+ | Immediate restart required |
+
+### Growth Characteristics
+
+- **Normal growth rate:** ~130 MB per hour under load
+- **Spike pattern:** CPU jumps from 1.3% to 87% in 3 minutes during message floods
+- **Recovery:** Restart drops memory to 58-128 MB, CPU to <5%
+
+### Root Cause Analysis
+
+**Suspected cause:** Slow WebSocket responses (857ms) stacking up during rapid Telegram message processing. Each `sendMessage` call consumes memory; rapid-fire responses create feedback loop.
+
+**Evidence:**
+- CPU spikes correlate with rapid `telegram sendMessage` calls
+- Memory climbs 600+ MB in minutes during active conversation
+- Idle state stable at <150 MB for extended periods
+
+### Health Monitor Configuration
+
+**Script location:** `~/.openclaw/bin/ella_health_monitor.sh`  
+**Cron schedule:** Every 15 minutes  
+**Threshold:** 800 MB  
+**Log file:** `~/.openclaw/logs/health_monitor.log`
+
+### Correct Restart Procedure (Mac)
+
+```bash
+launchctl stop ai.openclaw.gateway && sleep 3 && launchctl start ai.openclaw.gateway
+```
+
+**Never use:**
+- `pkill openclaw-gateway` — leaves zombie processes
+- `openclaw gateway start` — doesn't properly bind to launchctl
+- `kill -9` — force kill corrupts session state
+
+### Monitoring Commands
+
+```bash
+# Check current memory
+cd ~ && ps aux | grep openclaw-gateway | awk '{print $2, $3, $6}'
+
+# View health monitor log
+tail -20 ~/.openclaw/logs/health_monitor.log
+
+# Check delivery queue
+ls -la ~/.openclaw/delivery-queue/ | wc -l
+```
+
+---
+
 ## Session 9 — Open Items (For Session 10)
 
 **Date:** March 9, 2026
