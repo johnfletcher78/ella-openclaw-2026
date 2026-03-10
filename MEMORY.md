@@ -610,6 +610,30 @@ ls -la ~/.openclaw/delivery-queue/ | wc -l
 
 ---
 
+## Local Model Stack (Session 10)
+
+**Date:** March 9, 2026
+
+### Three-Tier Routing
+
+| Tier | Model | Purpose | Size |
+|------|-------|---------|------|
+| **Tier 1** | `deepseek-coder:6.7b` | Code writing, debugging, shell commands, technical fixes | 3.8 GB |
+| **Tier 2** | `llama3.1:8b` | General reasoning, Telegram responses, task management, chain of command decisions, teaching moments, self-diagnosis | 4.7 GB |
+| **Tier 3** | `moonshot/kimi-k2.5` | Complex analysis, high-stakes decisions, architecture, fallback only | Cloud API |
+
+### Disk Usage
+
+- **deepseek-coder:6.7b:** 3.8 GB
+- **llama3.1:8b:** 4.7 GB
+- **Total:** 8.5 GB (within 16 GB RAM limit)
+
+### Atlas VPS Note
+
+Atlas VPS still running everything through Moonshot — local model routing for Atlas is a future session task.
+
+---
+
 ## Session 9 — Open Items (For Session 10)
 
 **Date:** March 9, 2026
